@@ -1,0 +1,7 @@
+data/*.csv
+dbt/telco_dw/target/
+dbt/telco_dw/dbt_packages/
+dbt/telco_dw/logs/
+dbt/telco_dw/package-lock.yml
+__pycache__/
+.venv/
