@@ -1,0 +1,22 @@
+name: telco_dw
+version: '1.0.0'
+profile: telco_dw
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+models:
+  telco_dw:
+    staging:
+      +materialized: view
+      +schema: silver
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+      +schema: gold
+
+vars:
+  lookback_days: 3

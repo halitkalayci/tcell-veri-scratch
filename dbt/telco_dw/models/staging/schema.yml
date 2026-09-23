@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: stg_cdr_events
+    description: "Raw CDR olaylarinin tekillestirilmis ve normalize edilmis silver katmani."
+    columns:
+      - name: event_id
+        description: "Kaynak CDR olay kimligi; duplicate kayitlar elenerek tekillestirilir."
+        tests:
+          - not_null
+          - unique
+      - name: msisdn
+        description: "E.164 formatinda normalize edilmis abone numarasi."
+        tests:
+          - not_null
+      - name: event_type
+        description: "Kucuk harfe normalize edilmis olay tipi; gecersiz degerler korunur."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['voice', 'sms', 'data']
+              config:
+                where: "is_valid_event_type"
+      - name: event_ts
+        description: "Olayin UTC zamani."
+        tests:
+          - not_null
+      - name: duration_sec
+        description: "Ses olayinin saniye cinsinden suresi."
+      - name: bytes
+        description: "Data olayinin byte cinsinden kullanimi."
+      - name: cell_id
+        description: "Olayin baglandigi hucre kimligi."
+      - name: country_code
+        description: "Olayin ulke kodu."
+      - name: ingested_at
+        description: "Kaydin warehouse'a giris zamani UTC."
+        tests:
+          - not_null
+      - name: is_valid_event_type
+        description: "Olay tipinin voice, sms veya data olup olmadigini belirtir; gecersiz satirlar silinmez."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [true, false]

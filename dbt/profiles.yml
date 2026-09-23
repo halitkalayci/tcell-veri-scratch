@@ -1,0 +1,12 @@
+telco_dw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('PGHOST', 'localhost') }}"
+      port: 5432
+      user: telco
+      password: telco
+      dbname: telco_dw
+      schema: silver          # staging view'ları buraya; marts +schema ile gold'a
+      threads: 4
